@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Sarabun', 'sans-serif'], // Prioritize Inter, fallback to Sarabun
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom animation for the main heart next to the title */
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .animate-heartbeat {
+            animation: heartbeat 1s infinite;
+        }
+
+        /* Custom animation for floating hearts next to the title */
+        @keyframes floatHeart {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+            25% { transform: translateY(-10px) rotate(5deg); opacity: 0.9; }
+            50% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+            75% { transform: translateY(-10px) rotate(-5deg); opacity: 0.9; }
+            100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+        }
+
+        .float-heart-1 { animation: floatHeart 3s infinite ease-in-out; animation-delay: 0s; }
+        .float-heart-2 { animation: floatHeart 3s infinite ease-in-out; animation-delay: 0.5s; }
+        .float-heart-3 { animation: floatHeart 3s infinite ease-in-out; animation-delay: 1s; }
+
+        /* New animation for hearts floating from bottom to top, scattered */
+        @keyframes floatUpAndFade {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(var(--float-x, 0px)) rotate(var(--float-rotate, 0deg));
+                opacity: 0;
+            }
+        }
+
+        .floating-hearts-background-container {
+            position: fixed; /* Fixed to viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allow clicks to pass through to content below */
+            overflow: hidden; /* Hide hearts when they go off-screen */
+            z-index: -1; /* Place behind all other content */
+        }
+
+        .floating-background-heart {
+            position: absolute;
+            font-size: 1.5rem; /* Slightly smaller hearts for background */
+            color: rgba(255, 105, 180, 0.6); /* Pink with some transparency */
+            animation: floatUpAndFade var(--float-duration, 10s) infinite linear;
+            bottom: -50px; /* Start below the viewport */
+        }
+
+        /* Individual heart positions, delays, durations, and slight horizontal/rotation variations */
+        .heart-up-bg-1 { left: 10%; animation-delay: 0s; --float-duration: 12s; --float-x: 20px; --float-rotate: 5deg; }
+        .heart-up-bg-2 { left: 30%; animation-delay: 2s; --float-duration: 10s; --float-x: -15px; --float-rotate: -3deg; }
+        .heart-up-bg-3 { left: 50%; animation-delay: 4s; --float-duration: 14s; --float-x: 10px; --float-rotate: 8deg; }
+        .heart-up-bg-4 { left: 70%; animation-delay: 6s; --float-duration: 11s; --float-x: -25px; --float-rotate: -6deg; }
+        .heart-up-bg-5 { left: 90%; animation-delay: 8s; --float-duration: 13s; --float-x: 5px; --float-rotate: 2deg; }
+        .heart-up-bg-6 { left: 20%; animation-delay: 1s; --float-duration: 9s; --float-x: 30px; --float-rotate: 10deg; }
+        .heart-up-bg-7 { left: 40%; animation-delay: 3s; --float-duration: 11.5s; --float-x: -10px; --float-rotate: -4deg; }
+        .heart-up-bg-8 { left: 60%; animation-delay: 5s; --float-duration: 12.5s; --float-x: 15px; --float-rotate: 7deg; }
+        .heart-up-bg-9 { left: 80%; animation-delay: 7s; --float-duration: 10.5s; --float-x: -20px; --float-rotate: -2deg; }
+        .heart-up-bg-10 { left: 5%; animation-delay: 9s; --float-duration: 14.5s; --float-x: 25px; --float-rotate: 9deg; }
+        .heart-up-bg-11 { left: 25%; animation-delay: 0.8s; --float-duration: 10s; --float-x: 18px; --float-rotate: 3deg; }
+        .heart-up-bg-12 { left: 45%; animation-delay: 2.8s; --float-duration: 13s; --float-x: -12px; --float-rotate: -5deg; }
+        .heart-up-bg-13 { left: 65%; animation-delay: 4.8s; --float-duration: 11s; --float-x: 8px; --float-rotate: 6deg; }
+        .heart-up-bg-14 { left: 85%; animation-delay: 6.8s; --float-duration: 14s; --float-x: -22px; --float-rotate: -1deg; }
+        .heart-up-bg-15 { left: 15%; animation-delay: 8.8s; --float-duration: 12s; --float-x: 28px; --float-rotate: 4deg; }
+        /* Added more hearts for a denser effect */
+        .heart-up-bg-16 { left: 7%; animation-delay: 1.5s; --float-duration: 11s; --float-x: -5px; --float-rotate: 2deg; }
+        .heart-up-bg-17 { left: 22%; animation-delay: 3.5s; --float-duration: 13.5s; --float-x: 10px; --float-rotate: -7deg; }
+        .heart-up-bg-18 { left: 37%; animation-delay: 5.5s; --float-duration: 9.5s; --float-x: -8px; --float-rotate: 4deg; }
+        .heart-up-bg-19 { left: 52%; animation-delay: 7.5s; --float-duration: 12.5s; --float-x: 12px; --float-rotate: -3deg; }
+        .heart-up-bg-20 { left: 67%; animation-delay: 9.5s; --float-duration: 10.5s; --float-x: -18px; --float-rotate: 6deg; }
+        .heart-up-bg-21 { left: 82%; animation-delay: 0.7s; --float-duration: 14s; --float-x: 25px; --float-rotate: -1deg; }
+        .heart-up-bg-22 { left: 95%; animation-delay: 2.7s; --float-duration: 11.5s; --float-x: -10px; --float-rotate: 8deg; }
+        .heart-up-bg-23 { left: 3%; animation-delay: 4.7s; --float-duration: 10s; --float-x: 5px; --float-rotate: -5deg; }
+        .heart-up-bg-24 { left: 18%; animation-delay: 6.7s; --float-duration: 13s; --float-x: -15px; --float-rotate: 2deg; }
+        .heart-up-bg-25 { left: 33%; animation-delay: 8.7s; --float-duration: 12s; --float-x: 20px; --float-rotate: -4deg; }
+        /* Even more hearts for a very dense effect */
+        .heart-up-bg-26 { left: 12%; animation-delay: 0.3s; --float-duration: 11.8s; --float-x: 10px; --float-rotate: 7deg; }
+        .heart-up-bg-27 { left: 28%; animation-delay: 2.3s; --float-duration: 9.8s; --float-x: -20px; --float-rotate: -2deg; }
+        .heart-up-bg-28 { left: 42%; animation-delay: 4.3s; --float-duration: 13.8s; --float-x: 15px; --float-rotate: 9deg; }
+        .heart-up-bg-29 { left: 58%; animation-delay: 6.3s; --float-duration: 10.8s; --float-x: -5px; --float-rotate: -6deg; }
+        .heart-up-bg-30 { left: 73%; animation-delay: 8.3s; --float-duration: 12.8s; --float-x: 22px; --float-rotate: 3deg; }
+        .heart-up-bg-31 { left: 88%; animation-delay: 1.2s; --float-duration: 14.2s; --float-x: -12px; --float-rotate: -8deg; }
+        .heart-up-bg-32 { left: 2%; animation-delay: 3.2s; --float-duration: 10.2s; --float-x: 8px; --float-rotate: 4deg; }
+        .heart-up-bg-33 { left: 17%; animation-delay: 5.2s; --float-duration: 13.2s; --float-x: -18px; --float-rotate: -1deg; }
+        .heart-up-bg-34 { left: 35%; animation-delay: 7.2s; --float-duration: 11.2s; --float-x: 25px; --float-rotate: 5deg; }
+        .heart-up-bg-35 { left: 55%; animation-delay: 9.2s; --float-duration: 14.8s; --float-x: -7px; --float-rotate: -3deg; }
+    </style>
+</head>
+<body class="font-sans bg-pink-50 min-h-screen flex flex-col items-center justify-center p-8">
+
+    <div class="floating-hearts-background-container">
+        <span class="floating-background-heart heart-up-bg-1">💕</span>
+        <span class="floating-background-heart heart-up-bg-2">💕</span>
+        <span class="floating-background-heart heart-up-bg-3">💕</span>
+        <span class="floating-background-heart heart-up-bg-4">💕</span>
+        <span class="floating-background-heart heart-up-bg-5">💕</span>
+        <span class="floating-background-heart heart-up-6">💕</span>
+        <span class="floating-background-heart heart-up-bg-7">💕</span>
+        <span class="floating-background-heart heart-up-bg-8">💕</span>
+        <span class="floating-background-heart heart-up-bg-9">💕</span>
+        <span class="floating-background-heart heart-up-bg-10">💕</span>
+        <span class="floating-background-heart heart-up-bg-11">💕</span>
+        <span class="floating-background-heart heart-up-bg-12">💕</span>
+        <span class="floating-background-heart heart-up-bg-13">💕</span>
+        <span class="floating-background-heart heart-up-bg-14">💕</span>
+        <span class="floating-background-heart heart-up-bg-15">💕</span>
+        <span class="floating-background-heart heart-up-bg-16">💕</span>
+        <span class="floating-background-heart heart-up-bg-17">💕</span>
+        <span class="floating-background-heart heart-up-bg-18">💕</span>
+        <span class="floating-background-heart heart-up-bg-19">💕</span>
+        <span class="floating-background-heart heart-up-bg-20">💕</span>
+        <span class="floating-background-heart heart-up-bg-21">💕</span>
+        <span class="floating-background-heart heart-up-bg-22">💕</span>
+        <span class="floating-background-heart heart-up-bg-23">💕</span>
+        <span class="floating-background-heart heart-up-bg-24">💕</span>
+        <span class="floating-background-heart heart-up-bg-25">💕</span>
+        <span class="floating-background-heart heart-up-bg-26">💕</span>
+        <span class="floating-background-heart heart-up-bg-27">💕</span>
+        <span class="floating-background-heart heart-up-bg-28">💕</span>
+        <span class="floating-background-heart heart-up-bg-29">💕</span>
+        <span class="floating-background-heart heart-up-bg-30">💕</span>
+        <span class="floating-background-heart heart-up-bg-31">💕</span>
+        <span class="floating-background-heart heart-up-bg-32">💕</span>
+        <span class="floating-background-heart heart-up-bg-33">💕</span>
+        <span class="floating-background-heart heart-up-bg-34">💕</span>
+        <span class="floating-background-heart heart-up-bg-35">💕</span>
+    </div>
+
+    <h1 class="text-5xl font-extrabold text-pink-600 mb-6 flex items-center justify-center relative z-10">
+        <span class="absolute -left-10 top-1/2 -translate-y-1/2 text-3xl float-heart-1">💕</span>
+        <span class="absolute -right-10 top-1/2 -translate-y-1/2 text-3xl float-heart-2">💕</span>
+        <span class="absolute -left-20 top-1/4 -translate-y-1/2 text-2xl float-heart-3">💕</span>
+        Happy Anniversary <span class="text-4xl ml-2 animate-heartbeat">💕</span>
+    </h1>
+
+    <div class="relative w-full max-w-lg bg-white rounded-3xl shadow-xl p-6 flex flex-col items-center justify-center z-10">
+        <img id="carouselImage" 
+             src="GF.jpg" 
+             alt="Anniversary Image" 
+             class="w-full h-auto max-h-96 object-contain rounded-2xl shadow-lg mb-8 transition-opacity duration-300 ease-in-out"
+             onerror="this.onerror=null;this.src='https://placehold.co/400x300/F8BBD0/880E4F?text=Image+Not+Found';">
+        
+        <div id="buttonContainer" class="flex space-x-4 mt-6 mb-4">
+            <button id="prevBtn" class="px-6 py-3 text-lg font-semibold text-pink-500 bg-transparent border-2 border-pink-400 rounded-full hover:bg-pink-50 hover:text-pink-600 transition duration-300 ease-in-out shadow-md hover:shadow-lg">
+                Previous
+            </button>
+            <button id="nextBtn" class="px-6 py-3 text-lg font-semibold text-pink-500 bg-transparent border-2 border-pink-400 rounded-full hover:bg-pink-50 hover:text-pink-600 transition duration-300 ease-in-out shadow-md hover:shadow-lg">
+                Next
+            </button>
+        </div>
+
+        <p class="text-lg text-gray-600 mt-4">Slide through your beautiful memories!</p>
+    </div>
+
+    <a href="index.html" 
+        class="mt-10 px-6 py-3 text-lg font-semibold text-pink-500 bg-transparent border-2 border-pink-400 rounded-full hover:bg-pink-50 hover:text-pink-600 transition duration-300 ease-in-out shadow-md hover:shadow-lg inline-block z-10">
+        BACK Page
+    </a>
+    <a href="NT2.html" 
+        class="mt-4 px-6 py-3 text-lg font-semibold text-pink-500 bg-transparent border-2 border-pink-400 rounded-full hover:bg-pink-50 hover:text-pink-600 transition duration-300 ease-in-out shadow-md hover:shadow-lg inline-block z-10">
+        Next Page 2
+    </a>
+
+    <script>
+        // Array of image URLs. Replace these with your actual image paths!
+        // You can use placeholder images for testing, or link to to your own images.
+        const images = [
+            "GF.jpg", // Your local image
+            "GF2.jpg",
+            "3.jpg",
+            "4.jpg",
+            "5.jpg",
+        ];
+
+        let currentImageIndex = 0;
+        const carouselImage = document.getElementById('carouselImage');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        /**
+         * Updates the displayed image in the carousel.
+         * @param {number} index - The index of the image to display.
+         */
+        function updateImage(index) {
+            // Add a fade-out effect before changing the image
+            carouselImage.classList.remove('opacity-100');
+            carouselImage.classList.add('opacity-0');
+
+            setTimeout(() => {
+                carouselImage.src = images[index];
+                // Add a fade-in effect after changing the image
+                carouselImage.classList.remove('opacity-0');
+                carouselImage.classList.add('opacity-100');
+            }, 300); // Match this duration with the CSS transition duration
+        }
+
+        /**
+         * Displays the next image in the carousel.
+         */
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateImage(currentImageIndex);
+        }
+
+        /**
+         * Displays the previous image in the carousel.
+         */
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            updateImage(currentImageIndex);
+        }
+
+        // Event listeners for the navigation buttons
+        prevBtn.addEventListener('click', showPrevImage);
+        nextBtn.addEventListener('click', showNextImage);
+
+        // Initialize the carousel with the first image
+        window.onload = function() {
+            updateImage(currentImageIndex);
+        };
+    </script>
+</body>
+</html>
